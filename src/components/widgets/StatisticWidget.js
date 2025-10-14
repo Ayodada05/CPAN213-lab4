@@ -14,6 +14,7 @@ const StatisticWidget = ({
   trendValue,
   onPress,
 }) => {
+  console.log(`Rendering StatisticWidget: ${title}`);
   const isTab = isTablet();
   const isPositiveTrend = trend === 'up';
   const trendColor = isPositiveTrend
@@ -88,4 +89,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
-export default StatisticWidget;
+export default React.memo(StatisticWidget);

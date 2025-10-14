@@ -9,6 +9,15 @@ export const breakpoints = {
   tablet: 768, // Tablets
   desktop: 1024, // Large tablets/desktop
 };
+
+export const getBreakpoint = () => {
+  const { width } = screenData;
+  if (width < breakpoints.small) return 'small';
+  if (width < breakpoints.medium) return 'medium';
+  if (width < breakpoints.large) return 'large';
+  if (width < breakpoints.tablet) return 'tablet';
+  return 'desktop';
+};
 // Device type detection
 export const getDeviceType = () => {
   const { width } = screenData;
