@@ -167,6 +167,8 @@ DashboardScreen
 | Medium Phone  | 852x393     | Landscape   | 2       | ✅ Pass |
 | Medium Tablet | 1024x1366   | Portrait    | 3       | ✅ Pass |
 | Medium Tablet | 1366x1024   | Landscape   | 4       | ✅ Pass |
+| Iphone 17 Pro | 393x852     | Portrait    | 1       | ✅ Pass |
+| Iphone 17 Pro | 852x393     | Landscape   | 2       | ✅ Pass |
 
 ### Functionality Testing
 

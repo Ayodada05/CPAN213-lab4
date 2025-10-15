@@ -7,9 +7,11 @@ import {
   StyleSheet,
   Platform,
 } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { theme } from '../styles/theme';
 import { wp, hp, isTablet, getAdaptivePadding } from '../utils/responsive';
+
 const DashboardHeader = ({
   title = 'Dashboard',
   subtitle,
@@ -20,88 +22,98 @@ const DashboardHeader = ({
   onProfilePress,
 }) => {
   const isTab = isTablet();
+
   return (
     <>
       <StatusBar
         backgroundColor={theme.colors.primary.main}
         barStyle="light-content"
-        translucent={Platform.OS === 'android'}
+        translucent={false}
       />
-      <View style={[styles.container, isTab && styles.tabletContainer]}>
-        {/* Left Section */}
-        <View style={styles.leftSection}>
-          {showMenu && (
-            <TouchableOpacity
-              style={styles.iconButton}
-              onPress={onMenuPress}
-              accessible={true}
-              accessibilityRole="button"
-              accessibilityLabel="Open menu"
-            >
-              <Icon
-                name="menu"
-                size={isTab ? 28 : 24}
-                color={theme.colors.primary.contrast}
-              />
-            </TouchableOpacity>
-          )}
-          <View style={styles.titleContainer}>
-            <Text style={[styles.title, isTab && styles.tabletTitle]}>
-              {title}
-            </Text>
-            {subtitle && (
-              <Text style={[styles.subtitle, isTab && styles.tabletSubtitle]}>
-                {subtitle}
-              </Text>
+
+      {/* SafeAreaView prevents overlap on iPhones with a notch */}
+      <SafeAreaView edges={['top', 'left', 'right']} style={styles.safeArea}>
+        <View style={[styles.container, isTab && styles.tabletContainer]}>
+          {/* Left Section */}
+          <View style={styles.leftSection}>
+            {showMenu && (
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={onMenuPress}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Open menu"
+              >
+                <Icon
+                  name="menu"
+                  size={isTab ? 28 : 24}
+                  color={theme.colors.primary.contrast}
+                />
+              </TouchableOpacity>
             )}
+            <View style={styles.titleContainer}>
+              <Text style={[styles.title, isTab && styles.tabletTitle]}>
+                {title}
+              </Text>
+              {subtitle && (
+                <Text style={[styles.subtitle, isTab && styles.tabletSubtitle]}>
+                  {subtitle}
+                </Text>
+              )}
+            </View>
           </View>
-        </View>
-        {/* Right Section */}
-        <View style={styles.rightSection}>
-          {showNotifications && (
+
+          {/* Right Section */}
+          <View style={styles.rightSection}>
+            {showNotifications && (
+              <TouchableOpacity
+                style={styles.iconButton}
+                onPress={onNotificationPress}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="View notifications"
+              >
+                <Icon
+                  name="notifications"
+                  size={isTab ? 28 : 24}
+                  color={theme.colors.primary.contrast}
+                />
+                {/* Notification badge */}
+                <View style={styles.notificationBadge}>
+                  <Text style={styles.badgeText}>3</Text>
+                </View>
+              </TouchableOpacity>
+            )}
             <TouchableOpacity
-              style={styles.iconButton}
-              onPress={onNotificationPress}
+              style={styles.profileButton}
+              onPress={onProfilePress}
               accessible={true}
               accessibilityRole="button"
-              accessibilityLabel="View notifications"
+              accessibilityLabel="Open profile"
             >
-              <Icon
-                name="notifications"
-                size={isTab ? 28 : 24}
-                color={theme.colors.primary.contrast}
-              />
-              {/* Notification badge */}
-              <View style={styles.notificationBadge}>
-                <Text style={styles.badgeText}>3</Text>
+              <View style={styles.profileAvatar}>
+                <Icon
+                  name="person"
+                  size={isTab ? 24 : 20}
+                  color={theme.colors.primary.main}
+                />
               </View>
             </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            style={styles.profileButton}
-            onPress={onProfilePress}
-            accessible={true}
-            accessibilityRole="button"
-            accessibilityLabel="Open profile"
-          >
-            <View style={styles.profileAvatar}>
-              <Icon
-                name="person"
-                size={isTab ? 24 : 20}
-                color={theme.colors.primary.main}
-              />
-            </View>
-          </TouchableOpacity>
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </>
   );
 };
+
 const styles = StyleSheet.create({
+  safeArea: {
+    backgroundColor: theme.colors.primary.main,
+  },
   container: {
     backgroundColor: theme.colors.primary.main,
     paddingHorizontal: getAdaptivePadding(),
-    paddingTop: Platform.OS === 'ios' ? hp('6%') : hp('4%'),
+    paddingTop: Platform.OS === 'ios' ? hp('2%') : hp('4%'),
     paddingBottom: theme.spacing.md,
     flexDirection: 'row',
     alignItems: 'center',
@@ -110,7 +122,7 @@ const styles = StyleSheet.create({
   },
   tabletContainer: {
     paddingHorizontal: theme.spacing.xl,
-    paddingTop: hp('4%'),
+    paddingTop: hp('3%'),
   },
   leftSection: {
     flexDirection: 'row',
@@ -177,4 +189,5 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+
 export default DashboardHeader;
